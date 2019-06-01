@@ -1,7 +1,7 @@
 # Учебный проект «Код и Магия» [![Build status][travis-image]][travis-url]
 
 * Студент: [Дмитрий Остроухов](https://up.htmlacademy.ru/javascript/17/user/982629).
-* Наставник: `Неизвестно`.
+* Наставник: [Андрей Соколов](https://up.htmlacademy.ru/javascript/17/user/202891).
 
 ---
 
