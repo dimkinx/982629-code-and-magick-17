@@ -71,7 +71,7 @@ var renderBar = function (ctx, index, padding, height) {
 var renderBarChart = function (ctx, names, times) {
   var maxTime = Math.max.apply(null, times);
 
-  for (var i = 0; i < names.length; i++) {
+  for (var i = 0; i < Math.min(names.length, times.length); i++) {
     var time = Math.floor(times[i]);
     var name = names[i];
     var barHeight = Math.floor((Bar.MAX_HEIGHT * time) / maxTime);
@@ -85,16 +85,7 @@ var renderBarChart = function (ctx, names, times) {
   }
 };
 
-var compareArrays = function (names, times) {
-  if (names.length > times.length) {
-    times.length = names.length;
-  } else {
-    names.length = times.length;
-  }
-};
-
 window.renderStatistics = function (ctx, names, times) {
-  compareArrays(names, times);
   renderCloud(ctx);
   renderCloudTitle(ctx);
   renderBarChart(ctx, names, times);
