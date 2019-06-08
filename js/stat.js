@@ -85,7 +85,16 @@ var renderBarChart = function (ctx, names, times) {
   }
 };
 
+var compareArrays = function (names, times) {
+  if (names.length > times.length) {
+    times.length = names.length;
+  } else {
+    names.length = times.length;
+  }
+};
+
 window.renderStatistics = function (ctx, names, times) {
+  compareArrays(names, times);
   renderCloud(ctx);
   renderCloudTitle(ctx);
   renderBarChart(ctx, names, times);
