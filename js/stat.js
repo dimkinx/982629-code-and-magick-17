@@ -29,9 +29,9 @@ var Bar = {
   X: 150,
   Y: 75,
   GAP: 50,
-  MAX_HEIGHT: 150,
+  HEIGHT: 150,
   WIDTH: 40,
-  COLOR_FOR_YOU: 'rgb(255, 0, 0)'
+  COLOR: 'rgb(255, 0, 0)'
 };
 
 var renderCloud = function (ctx) {
@@ -63,9 +63,12 @@ var renderBarText = function (ctx, text, index, padding) {
   ctx.fillText(text, Bar.X + (Bar.GAP + Bar.WIDTH) * index, Bar.Y + padding);
 };
 
-var renderBar = function (ctx, index, padding, height) {
-  ctx.fillRect(Bar.X + (Bar.GAP + Bar.WIDTH) * index, Bar.Y + padding + Text.LINE_HEIGHT, Bar.WIDTH, height);
+var renderBar = function (ctx, name, color, index, padding, height) {
+  ctx.fillStyle = (name === 'Вы')
+    ? color
+    : 'hsl(240, ' + Math.floor(Math.random() * 100) + '%, 50%)';
 
+  ctx.fillRect(Bar.X + (Bar.GAP + Bar.WIDTH) * index, Bar.Y + padding + Text.LINE_HEIGHT, Bar.WIDTH, height);
 };
 
 var renderBarChart = function (ctx, names, times) {
@@ -74,14 +77,12 @@ var renderBarChart = function (ctx, names, times) {
   for (var i = 0; i < Math.min(names.length, times.length); i++) {
     var time = Math.floor(times[i]);
     var name = names[i];
-    var barHeight = Math.floor((Bar.MAX_HEIGHT * time) / maxTime);
-    var barTopPadding = Bar.MAX_HEIGHT - barHeight;
-    var colorForOther = 'hsl(240, ' + Math.floor(Math.random() * 100) + '%, 50%)';
+    var height = Math.floor((Bar.HEIGHT * time) / maxTime);
+    var padding = Bar.HEIGHT - height;
 
-    renderBarText(ctx, time, i, barTopPadding);
-    ctx.fillStyle = name === 'Вы' ? Bar.COLOR_FOR_YOU : colorForOther;
-    renderBar(ctx, i, barTopPadding, barHeight);
-    renderBarText(ctx, name, i, Bar.MAX_HEIGHT + Text.LINE_HEIGHT + Text.PADDING);
+    renderBarText(ctx, time, i, padding);
+    renderBar(ctx, name, Bar.COLOR, i, padding, height);
+    renderBarText(ctx, name, i, Bar.HEIGHT + Text.LINE_HEIGHT + Text.PADDING);
   }
 };
 

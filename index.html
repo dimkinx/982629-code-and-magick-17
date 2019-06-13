@@ -180,13 +180,12 @@
     <p class="setup-similar-label">Петр Петров</p>
   </div>
 </template>
-
 <script>
   'use strict';
 
-  window.fireballSize = 22;
-  window.wizardSpeed = 3;
-  window.wizardWidth = 70;
+  var fireballSize = 22;
+  var wizardSpeed = 3;
+  var wizardWidth = 70;
 
   var getFireballSpeed = function (left) {
     return left ? 5 : 2;
@@ -201,12 +200,10 @@
   };
 
   var getWizardY = function (height) {
-    return height / 3 - getWizardHeight(wizardWidth);
+    return Math.floor(height / 3);
   };
 </script>
-
 <script src="js/stat.js"></script>
 <script src="js/game.js"></script>
-
 </body>
 </html>
