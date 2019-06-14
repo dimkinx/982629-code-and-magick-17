@@ -41,6 +41,9 @@ var EYE_COLORS = [
 
 var WIZARDS_NUM = 4;
 
+var similarWizardTemplate = document.querySelector('#similar-wizard-template');
+var setupSimilarItem = similarWizardTemplate.content.querySelector('.setup-similar-item');
+
 var wizardsSimilarList = document.querySelector('.setup-similar-list');
 
 var showBlock = function (selector) {
@@ -70,9 +73,7 @@ var makeWizard = function () {
 };
 
 var renderWizard = function (wizard) {
-  var parent = document.querySelector('#similar-wizard-template');
-  var child = parent.content.querySelector('.setup-similar-item');
-  var clone = child.cloneNode(true);
+  var clone = setupSimilarItem.cloneNode(true);
 
   clone.querySelector('.setup-similar-label').textContent = wizard.name;
   clone.querySelector('.wizard-coat').style.fill = wizard.coatColor;
