@@ -63,11 +63,13 @@ var renderBarText = function (ctx, text, index, padding) {
   ctx.fillText(text, Bar.X + (Bar.GAP + Bar.WIDTH) * index, Bar.Y + padding);
 };
 
-var renderBar = function (ctx, name, color, index, padding, height) {
+var setBarColor = function (ctx, name, color) {
   ctx.fillStyle = (name === 'Вы')
     ? color
     : 'hsl(240, ' + Math.floor(Math.random() * 100) + '%, 50%)';
+};
 
+var renderBar = function (ctx, index, padding, height) {
   ctx.fillRect(Bar.X + (Bar.GAP + Bar.WIDTH) * index, Bar.Y + padding + Text.LINE_HEIGHT, Bar.WIDTH, height);
 };
 
@@ -81,7 +83,8 @@ var renderBarChart = function (ctx, names, times) {
     var padding = Bar.HEIGHT - height;
 
     renderBarText(ctx, time, i, padding);
-    renderBar(ctx, name, Bar.COLOR, i, padding, height);
+    setBarColor(ctx, name, Bar.COLOR);
+    renderBar(ctx, i, padding, height);
     renderBarText(ctx, name, i, Bar.HEIGHT + Text.LINE_HEIGHT + Text.PADDING);
   }
 };

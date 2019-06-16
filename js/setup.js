@@ -46,14 +46,12 @@ var setupSimilarItem = similarWizardTemplate.content.querySelector('.setup-simil
 
 var wizardsSimilarList = document.querySelector('.setup-similar-list');
 
-var showBlock = function (selector) {
-  var element = document.querySelector(selector);
+var showElement = function (element) {
   element.classList.remove('hidden');
 };
 
 var getRandomItem = function (array) {
-  var index = Math.floor(Math.random() * array.length);
-  return array[index];
+  return array[Math.floor(Math.random() * array.length)];
 };
 
 var getRandomBool = function () {
@@ -61,7 +59,9 @@ var getRandomBool = function () {
 };
 
 var getRandomName = function () {
-  return (getRandomBool() ? [FIRST_NAMES, LAST_NAMES] : [LAST_NAMES, FIRST_NAMES]).map(getRandomItem).join(' ');
+  return (getRandomBool() ? [FIRST_NAMES, LAST_NAMES] : [LAST_NAMES, FIRST_NAMES])
+    .map(getRandomItem)
+    .join(' ');
 };
 
 var makeWizard = function () {
@@ -73,31 +73,31 @@ var makeWizard = function () {
 };
 
 var renderWizard = function (wizard) {
-  var clone = setupSimilarItem.cloneNode(true);
+  var wizardElement = setupSimilarItem.cloneNode(true);
 
-  clone.querySelector('.setup-similar-label').textContent = wizard.name;
-  clone.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-  clone.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
+  wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+  wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
+  wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
 
-  return clone;
+  return wizardElement;
 };
 
-var addWizards = function (list, wizards) {
+var addWizards = function (target, wizards) {
   var fragment = document.createDocumentFragment();
 
   wizards.forEach(function (wizard) {
     fragment.appendChild(renderWizard(wizard));
   });
 
-  list.appendChild(fragment);
+  target.appendChild(fragment);
 };
 
-var getWizards = function () {
-  return Array(WIZARDS_NUM).fill(null).map(makeWizard);
+var getWizards = function (number) {
+  return Array(number).fill(null).map(makeWizard);
 };
 
-showBlock('.setup');
+showElement(document.querySelector('.setup'));
 
-addWizards(wizardsSimilarList, getWizards());
+addWizards(wizardsSimilarList, getWizards(WIZARDS_NUM));
 
-showBlock('.setup-similar');
+showElement(document.querySelector('.setup-similar'));
