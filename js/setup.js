@@ -171,18 +171,6 @@ setupUserName.addEventListener('blur', function () {
   document.addEventListener('keydown', onPopupEscPress);
 });
 
-var rgb2hex = function (color) {
-  if (color.search('rgb') === -1) {
-    return color;
-  } else {
-    color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+))?\)$/);
-    var hex = function (x) {
-      return ('0' + parseInt(x, 10).toString(16)).slice(-2);
-    };
-    return '#' + hex(color[1]) + hex(color[2]) + hex(color[3]);
-  }
-};
-
 var excludeValue = function (array, value) {
   return array.filter(function (it) {
     return it !== value;
@@ -204,9 +192,9 @@ wizardEyesColor.addEventListener('click', function (evt) {
 });
 
 wizardFireballColor.addEventListener('click', function (evt) {
-  var style = evt.target.style;
-  var color = getRandomItem(excludeValue(FIREBALL_COLORS, rgb2hex(style.backgroundColor)));
-  style.backgroundColor = color;
+  var colors = excludeValue(FIREBALL_COLORS, fireballColorInput.value);
+  var color = getRandomItem(colors);
+  evt.target.style.backgroundColor = color;
   fireballColorInput.value = color;
 });
 
