@@ -2,10 +2,10 @@
 (function () {
 
   var dialog = document.querySelector('.setup');
-  var dialogOpen = document.querySelector('.setup-open');
-  var dialogClose = dialog.querySelector('.setup-close');
+  var openElement = document.querySelector('.setup-open');
+  var closeElement = dialog.querySelector('.setup-close');
   var dialogHandle = dialog.querySelector('.upload');
-  var dialogUserNameInput = dialog.querySelector('.setup-user-name');
+  var userNameInput = dialog.querySelector('.setup-user-name');
 
   var dragged = false;
 
@@ -52,31 +52,31 @@
     document.removeEventListener('keydown', onPopupEscPress);
   };
 
-  dialogOpen.addEventListener('click', function () {
+  openElement.addEventListener('click', function () {
     openPopup();
   });
 
-  dialogOpen.addEventListener('keydown', function (evt) {
+  openElement.addEventListener('keydown', function (evt) {
     if (isEnterKey(evt)) {
       openPopup();
     }
   });
 
-  dialogClose.addEventListener('click', function () {
+  closeElement.addEventListener('click', function () {
     closePopup();
   });
 
-  dialogClose.addEventListener('keydown', function (evt) {
+  closeElement.addEventListener('keydown', function (evt) {
     if (isEnterKey(evt)) {
       closePopup();
     }
   });
 
-  dialogUserNameInput.addEventListener('focus', function () {
+  userNameInput.addEventListener('focus', function () {
     document.removeEventListener('keydown', onPopupEscPress);
   });
 
-  dialogUserNameInput.addEventListener('blur', function () {
+  userNameInput.addEventListener('blur', function () {
     document.addEventListener('keydown', onPopupEscPress);
   });
 
