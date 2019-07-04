@@ -53,9 +53,6 @@ var similarWizardTemplate = document.querySelector('#similar-wizard-template');
 var setupSimilarItem = similarWizardTemplate.content.querySelector('.setup-similar-item');
 var wizardsSimilarList = document.querySelector('.setup-similar-list');
 var setup = document.querySelector('.setup');
-var setupUserName = setup.querySelector('.setup-user-name');
-var setupOpen = document.querySelector('.setup-open');
-var setupClose = setup.querySelector('.setup-close');
 var setupSimilar = setup.querySelector('.setup-similar');
 var wizardCoatColor = setup.querySelector('.setup-wizard .wizard-coat');
 var wizardEyesColor = setup.querySelector('.setup-wizard .wizard-eyes');
@@ -110,67 +107,6 @@ var getWizards = function (number) {
   return Array(number).fill(null).map(makeWizard);
 };
 
-var showElement = function (element) {
-  element.classList.remove('hidden');
-};
-
-var hideElement = function (element) {
-  element.classList.add('hidden');
-};
-
-var isEnterKey = function (evt) {
-  return evt.key === 'Enter';
-};
-
-var isEscapeKey = function (evt) {
-  return evt.key === 'Escape'
-    || evt.key === 'Esc'; // IE/Edge specific value
-};
-
-var onPopupEscPress = function (evt) {
-  if (isEscapeKey(evt)) {
-    closePopup();
-  }
-};
-
-var openPopup = function () {
-  showElement(setup);
-  document.addEventListener('keydown', onPopupEscPress);
-};
-
-var closePopup = function () {
-  hideElement(setup);
-  document.removeEventListener('keydown', onPopupEscPress);
-};
-
-setupOpen.addEventListener('click', function () {
-  openPopup();
-});
-
-setupOpen.addEventListener('keydown', function (evt) {
-  if (isEnterKey(evt)) {
-    openPopup();
-  }
-});
-
-setupClose.addEventListener('click', function () {
-  closePopup();
-});
-
-setupClose.addEventListener('keydown', function (evt) {
-  if (isEnterKey(evt)) {
-    closePopup();
-  }
-});
-
-setupUserName.addEventListener('focus', function () {
-  document.removeEventListener('keydown', onPopupEscPress);
-});
-
-setupUserName.addEventListener('blur', function () {
-  document.addEventListener('keydown', onPopupEscPress);
-});
-
 var excludeValue = function (array, value) {
   return array.filter(function (it) {
     return it !== value;
@@ -200,4 +136,4 @@ wizardFireballColor.addEventListener('click', function (evt) {
 
 addWizards(wizardsSimilarList, getWizards(WIZARDS_NUM));
 
-showElement(setupSimilar);
+setupSimilar.classList.remove('hidden');
