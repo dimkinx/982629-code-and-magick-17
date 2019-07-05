@@ -16,10 +16,10 @@
     y: undefined,
   };
 
-  var CellColors = {
-    BORDER: 'rgb(255, 255, 255)',
-    BG: 'rgba(255, 255, 255, 0.1)',
-    BG_FOCUS: 'rgba(255, 255, 255, 0.3)',
+  var CellColor = {
+    BACKGROUND: 'rgba(255, 255, 255, 0.1)',
+    BACKGROUND_IN_FOCUS: 'rgba(255, 255, 255, 0.3)',
+    BORDER_IN_FOCUS: 'rgb(255, 255, 255)',
   };
 
   var showElement = function (element) {
@@ -44,9 +44,7 @@
   };
 
   var onPopupEscPress = function (evt) {
-    if (isEscapeKey(evt)) {
-      closePopup();
-    }
+    return isEscapeKey(evt) && closePopup();
   };
 
   var openPopup = function () {
@@ -65,9 +63,7 @@
   });
 
   openElement.addEventListener('keydown', function (evt) {
-    if (isEnterKey(evt)) {
-      openPopup();
-    }
+    return isEnterKey(evt) && openPopup();
   });
 
   closeElement.addEventListener('click', function () {
@@ -75,9 +71,7 @@
   });
 
   closeElement.addEventListener('keydown', function (evt) {
-    if (isEnterKey(evt)) {
-      closePopup();
-    }
+    return isEnterKey(evt) && closePopup();
   });
 
   userNameInput.addEventListener('focus', function () {
@@ -88,7 +82,7 @@
     document.addEventListener('keydown', onPopupEscPress);
   });
 
-  var mouseMoveHandler = function (evt) {
+  var onMouseMove = function (evt) {
     evt.preventDefault();
     dragged = true;
 
@@ -106,25 +100,25 @@
     dialog.style.left = (dialog.offsetLeft - shift.x) + 'px';
   };
 
-  var clickPreventDefaultHandler = function (evt) {
+  var onClickPreventDefault = function (evt) {
     evt.preventDefault();
-    dialogHandle.removeEventListener('click', clickPreventDefaultHandler);
+    dialogHandle.removeEventListener('click', onClickPreventDefault);
   };
 
-  var mouseUpHandler = function (evt) {
+  var onMouseUp = function (evt) {
     evt.preventDefault();
 
     if (dragged) {
-      dialogHandle.addEventListener('click', clickPreventDefaultHandler);
+      dialogHandle.addEventListener('click', onClickPreventDefault);
     }
 
-    document.removeEventListener('mousemove', mouseMoveHandler);
-    document.removeEventListener('mouseup', mouseUpHandler);
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
 
     dragged = false;
   };
 
-  var dialogDragHandler = function (evt) {
+  var onDialogDrag = function (evt) {
     evt.preventDefault();
 
     startCoords = {
@@ -132,36 +126,36 @@
       y: evt.clientY,
     };
 
-    document.addEventListener('mousemove', mouseMoveHandler);
-    document.addEventListener('mouseup', mouseUpHandler);
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   };
 
-  var itemDragStartHandler = function (evt) {
+  var onItemDragStart = function (evt) {
     evt.target.style.opacity = '0.5';
 
     dropCells.forEach(function (value) {
-      value.style.borderColor = CellColors.BORDER;
-      value.style.backgroundColor = CellColors.BG;
+      value.style.borderColor = CellColor.BORDER_IN_FOCUS;
+      value.style.backgroundColor = CellColor.BACKGROUND;
     });
   };
 
-  var itemDragEnterHandler = function (evt) {
+  var onItemDragEnter = function (evt) {
     if (evt.target.className === 'setup-artifacts-cell') {
-      evt.target.style.backgroundColor = CellColors.BG_FOCUS;
+      evt.target.style.backgroundColor = CellColor.BACKGROUND_IN_FOCUS;
     }
   };
 
-  var itemDragOverHandler = function (evt) {
+  var onItemDragOver = function (evt) {
     evt.preventDefault();
   };
 
-  var itemDragLeaveHandler = function (evt) {
+  var onItemDragLeave = function (evt) {
     if (evt.target.className === 'setup-artifacts-cell') {
-      evt.target.style.backgroundColor = CellColors.BG;
+      evt.target.style.backgroundColor = CellColor.BACKGROUND;
     }
   };
 
-  var itemDropHandler = function (evt) {
+  var onItemDrop = function (evt) {
     evt.preventDefault();
 
     if (evt.target.className === 'setup-artifacts-cell') {
@@ -170,7 +164,7 @@
     }
   };
 
-  var itemDragEndHandler = function () {
+  var onItemDragEnd = function () {
     removeAttrStyle(draggableItem);
 
     dropCells.forEach(function (value) {
@@ -179,13 +173,13 @@
   };
 
   dropCells.forEach(function (cell) {
-    cell.addEventListener('dragstart', itemDragStartHandler, false);
-    cell.addEventListener('dragenter', itemDragEnterHandler, false);
-    cell.addEventListener('dragover', itemDragOverHandler, false);
-    cell.addEventListener('dragleave', itemDragLeaveHandler, false);
-    cell.addEventListener('drop', itemDropHandler, false);
-    cell.addEventListener('dragend', itemDragEndHandler, false);
+    cell.addEventListener('dragstart', onItemDragStart, false);
+    cell.addEventListener('dragenter', onItemDragEnter, false);
+    cell.addEventListener('dragover', onItemDragOver, false);
+    cell.addEventListener('dragleave', onItemDragLeave, false);
+    cell.addEventListener('drop', onItemDrop, false);
+    cell.addEventListener('dragend', onItemDragEnd, false);
   });
 
-  dialogHandle.addEventListener('mousedown', dialogDragHandler);
+  dialogHandle.addEventListener('mousedown', onDialogDrag);
 })();
