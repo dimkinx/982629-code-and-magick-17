@@ -9,13 +9,6 @@
   var dropCells = dialog.querySelectorAll('.setup-artifacts-cell');
   var draggableItem = dialog.querySelector('img[draggable="true"]');
 
-  var dragged = false;
-
-  var startCoords = {
-    x: undefined,
-    y: undefined,
-  };
-
   var CellColor = {
     BACKGROUND: 'rgba(255, 255, 255, 0.1)',
     BACKGROUND_IN_FOCUS: 'rgba(255, 255, 255, 0.3)',
@@ -82,53 +75,51 @@
     document.addEventListener('keydown', onPopupEscPress);
   });
 
-  var onMouseMove = function (evt) {
+  dialogHandle.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
-    dragged = true;
+
+    var startCoords = {
+      x: evt.clientX,
+      y: evt.clientY,
+    };
 
     var shift = {
-      x: startCoords.x - evt.clientX,
-      y: startCoords.y - evt.clientY,
+      x: 0,
+      y: 0,
     };
 
-    startCoords = {
-      x: evt.clientX,
-      y: evt.clientY,
+    var dragged = false;
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+      dragged = true;
+
+      shift.x = startCoords.x - moveEvt.clientX;
+      shift.y = startCoords.y - moveEvt.clientY;
+
+      startCoords.x = moveEvt.clientX;
+      startCoords.y = moveEvt.clientY;
+
+      dialog.style.top = (dialog.offsetTop - shift.y) + 'px';
+      dialog.style.left = (dialog.offsetLeft - shift.x) + 'px';
     };
 
-    dialog.style.top = (dialog.offsetTop - shift.y) + 'px';
-    dialog.style.left = (dialog.offsetLeft - shift.x) + 'px';
-  };
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
 
-  var onClickPreventDefault = function (evt) {
-    evt.preventDefault();
-    dialogHandle.removeEventListener('click', onClickPreventDefault);
-  };
+      document.removeEventListener('mousemove', onMouseMove);
 
-  var onMouseUp = function (evt) {
-    evt.preventDefault();
-
-    if (dragged) {
-      dialogHandle.addEventListener('click', onClickPreventDefault);
-    }
-
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
-
-    dragged = false;
-  };
-
-  var onDialogDrag = function (evt) {
-    evt.preventDefault();
-
-    startCoords = {
-      x: evt.clientX,
-      y: evt.clientY,
+      if (dragged) {
+        var onClickPreventDefault = function (draggedEvt) {
+          draggedEvt.preventDefault();
+        };
+        dialogHandle.addEventListener('click', onClickPreventDefault, {once: true});
+      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  };
+    document.addEventListener('mouseup', onMouseUp, {once: true});
+  });
 
   var onItemDragStart = function (evt) {
     evt.target.style.opacity = '0.5';
@@ -180,6 +171,4 @@
     cell.addEventListener('drop', onItemDrop, false);
     cell.addEventListener('dragend', onItemDragEnd, false);
   });
-
-  dialogHandle.addEventListener('mousedown', onDialogDrag);
 })();
