@@ -7,6 +7,8 @@
   var dialogHandle = dialog.querySelector('.upload');
   var userNameInput = dialog.querySelector('.setup-user-name');
   var dropCells = dialog.querySelectorAll('.setup-artifacts-cell');
+  var shopElement = dialog.querySelector('.setup-artifacts-shop');
+  var artifactElement = dialog.querySelector('.setup-artifacts');
   var draggableItem = dialog.querySelector('img[draggable="true"]');
 
   var CellColor = {
@@ -157,18 +159,19 @@
 
   var onItemDragEnd = function () {
     removeAttrStyle(draggableItem);
+    draggableItem = null;
 
     dropCells.forEach(function (value) {
       removeAttrStyle(value);
     });
   };
 
-  dropCells.forEach(function (cell) {
-    cell.addEventListener('dragstart', onItemDragStart, false);
-    cell.addEventListener('dragenter', onItemDragEnter, false);
-    cell.addEventListener('dragover', onItemDragOver, false);
-    cell.addEventListener('dragleave', onItemDragLeave, false);
-    cell.addEventListener('drop', onItemDrop, false);
-    cell.addEventListener('dragend', onItemDragEnd, false);
+  [shopElement, artifactElement].forEach(function (element) {
+    element.addEventListener('dragstart', onItemDragStart);
+    element.addEventListener('dragenter', onItemDragEnter);
+    element.addEventListener('dragover', onItemDragOver);
+    element.addEventListener('dragleave', onItemDragLeave);
+    element.addEventListener('drop', onItemDrop);
+    element.addEventListener('dragend', onItemDragEnd);
   });
 })();
