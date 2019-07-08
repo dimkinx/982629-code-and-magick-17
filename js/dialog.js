@@ -7,7 +7,9 @@
   var dialogHandle = dialog.querySelector('.upload');
   var userNameInput = dialog.querySelector('.setup-user-name');
   var dropCells = dialog.querySelectorAll('.setup-artifacts-cell');
-  var draggableItem = dialog.querySelector('img[draggable="true"]');
+  var shopElement = dialog.querySelector('.setup-artifacts-shop');
+  var artifactElement = dialog.querySelector('.setup-artifacts');
+  var draggableItem = null;
 
   var CellColor = {
     BACKGROUND: 'rgba(255, 255, 255, 0.1)',
@@ -122,7 +124,10 @@
   });
 
   var onItemDragStart = function (evt) {
-    evt.target.style.opacity = '0.5';
+    if (evt.target.hasAttribute('draggable') && evt.target.getAttribute('draggable') === 'true') {
+      draggableItem = evt.target;
+      draggableItem.style.opacity = '0.5';
+    }
 
     dropCells.forEach(function (value) {
       value.style.borderColor = CellColor.BORDER_IN_FOCUS;
@@ -157,18 +162,19 @@
 
   var onItemDragEnd = function () {
     removeAttrStyle(draggableItem);
+    draggableItem = null;
 
     dropCells.forEach(function (value) {
       removeAttrStyle(value);
     });
   };
 
-  dropCells.forEach(function (cell) {
-    cell.addEventListener('dragstart', onItemDragStart, false);
-    cell.addEventListener('dragenter', onItemDragEnter, false);
-    cell.addEventListener('dragover', onItemDragOver, false);
-    cell.addEventListener('dragleave', onItemDragLeave, false);
-    cell.addEventListener('drop', onItemDrop, false);
-    cell.addEventListener('dragend', onItemDragEnd, false);
+  [shopElement, artifactElement].forEach(function (element) {
+    element.addEventListener('dragstart', onItemDragStart);
+    element.addEventListener('dragenter', onItemDragEnter);
+    element.addEventListener('dragover', onItemDragOver);
+    element.addEventListener('dragleave', onItemDragLeave);
+    element.addEventListener('drop', onItemDrop);
+    element.addEventListener('dragend', onItemDragEnd);
   });
 })();
