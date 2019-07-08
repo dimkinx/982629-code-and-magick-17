@@ -9,7 +9,7 @@
   var dropCells = dialog.querySelectorAll('.setup-artifacts-cell');
   var shopElement = dialog.querySelector('.setup-artifacts-shop');
   var artifactElement = dialog.querySelector('.setup-artifacts');
-  var draggableItem = dialog.querySelector('img[draggable="true"]');
+  var draggableItem = null;
 
   var CellColor = {
     BACKGROUND: 'rgba(255, 255, 255, 0.1)',
@@ -124,7 +124,10 @@
   });
 
   var onItemDragStart = function (evt) {
-    evt.target.style.opacity = '0.5';
+    if (evt.target.hasAttribute('draggable') && evt.target.getAttribute('draggable') === 'true') {
+      draggableItem = evt.target;
+      draggableItem.style.opacity = '0.5';
+    }
 
     dropCells.forEach(function (value) {
       value.style.borderColor = CellColor.BORDER_IN_FOCUS;
