@@ -1,6 +1,6 @@
 'use strict';
-(function () {
 
+(function () {
   var dialog = document.querySelector('.setup');
   var openElement = document.querySelector('.setup-open');
   var closeElement = dialog.querySelector('.setup-close');

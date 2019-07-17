@@ -1,6 +1,6 @@
 'use strict';
-(function () {
 
+(function () {
   var FIRST_NAMES = [
     'Иван',
     'Хуан Себастьян',
