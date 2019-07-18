@@ -4,6 +4,7 @@
   var dialog = document.querySelector('.setup');
   var openElement = document.querySelector('.setup-open');
   var closeElement = dialog.querySelector('.setup-close');
+  var dialogForm = dialog.querySelector('.setup-wizard-form');
   var dialogHandle = dialog.querySelector('.upload');
   var userNameInput = dialog.querySelector('.setup-user-name');
   var dropCells = dialog.querySelectorAll('.setup-artifacts-cell');
@@ -176,5 +177,10 @@
     element.addEventListener('dragleave', onItemDragLeave);
     element.addEventListener('drop', onItemDrop);
     element.addEventListener('dragend', onItemDragEnd);
+  });
+
+  dialogForm.addEventListener('submit', function (evt) {
+    window.backend.save(new FormData(dialogForm), closePopup, window.utils.onError);
+    evt.preventDefault();
   });
 })();

@@ -1,28 +1,6 @@
 'use strict';
 
 (function () {
-  var FIRST_NAMES = [
-    'Иван',
-    'Хуан Себастьян',
-    'Мария',
-    'Кристоф',
-    'Виктор',
-    'Юлия',
-    'Люпита',
-    'Вашингтон',
-  ];
-
-  var LAST_NAMES = [
-    'да Марья',
-    'Верон',
-    'Мирабелла',
-    'Вальц',
-    'Онопко',
-    'Топольницкая',
-    'Нионго',
-    'Ирвинг',
-  ];
-
   var COAT_COLORS = [
     'rgb(101, 137, 164)',
     'rgb(241, 43, 107)',
@@ -63,52 +41,6 @@
   var coatInput = setup.querySelector('input[name=coat-color]');
   var eyesInput = setup.querySelector('input[name=eyes-color]');
   var fireballInput = setup.querySelector('input[name=fireball-color]');
-
-  var getRandomItem = function (array) {
-    return array[Math.floor(Math.random() * array.length)];
-  };
-
-  var getRandomBool = function () {
-    return Math.random() < 0.5;
-  };
-
-  var getRandomName = function () {
-    return (getRandomBool() ? [FIRST_NAMES, LAST_NAMES] : [LAST_NAMES, FIRST_NAMES])
-      .map(getRandomItem)
-      .join(' ');
-  };
-
-  var makeWizard = function () {
-    return {
-      name: getRandomName(),
-      coatColor: getRandomItem(COAT_COLORS),
-      eyesColor: getRandomItem(EYE_COLORS),
-    };
-  };
-
-  var renderWizard = function (wizard) {
-    var wizardElement = setupSimilarItem.cloneNode(true);
-
-    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
-    wizardElement.querySelector('.wizard-coat').style.fill = wizard.coatColor;
-    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.eyesColor;
-
-    return wizardElement;
-  };
-
-  var addWizards = function (target, wizards) {
-    var fragment = document.createDocumentFragment();
-
-    wizards.forEach(function (wizard) {
-      fragment.appendChild(renderWizard(wizard));
-    });
-
-    target.appendChild(fragment);
-  };
-
-  var getWizards = function (number) {
-    return Array(number).fill(null).map(makeWizard);
-  };
 
   var makeCounter = function (max) {
     var counter = 0;
@@ -155,7 +87,30 @@
   eyesColor.addEventListener('click', onEyesClick);
   fireballColor.addEventListener('click', onFireballClick);
 
-  addWizards(wizardsSimilarList, getWizards(WIZARDS_NUM));
+  var renderWizard = function (wizard) {
+    var wizardElement = setupSimilarItem.cloneNode(true);
 
-  setupSimilar.classList.remove('hidden');
+    wizardElement.querySelector('.setup-similar-label').textContent = wizard.name;
+    wizardElement.querySelector('.wizard-coat').style.fill = wizard.colorCoat;
+    wizardElement.querySelector('.wizard-eyes').style.fill = wizard.colorEyes;
+
+    return wizardElement;
+  };
+
+  var addWizards = function (target, wizards) {
+    var fragment = document.createDocumentFragment();
+
+    wizards.forEach(function (wizard) {
+      fragment.appendChild(renderWizard(wizard));
+    });
+
+    target.appendChild(fragment);
+  };
+
+  var onLoad = function (wizards) {
+    addWizards(wizardsSimilarList, wizards.slice(0, WIZARDS_NUM));
+    setupSimilar.classList.remove('hidden');
+  };
+
+  window.backend.load(onLoad, window.utils.onError);
 })();
