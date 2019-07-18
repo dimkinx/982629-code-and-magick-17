@@ -1,6 +1,6 @@
 'use strict';
-(function () {
 
+(function () {
   var Cloud = {
     X: 100,
     Y: 10,
