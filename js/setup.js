@@ -97,20 +97,24 @@
     return wizardElement;
   };
 
-  var addWizards = function (target, wizards) {
+  var addWizards = function (wizards) {
     var fragment = document.createDocumentFragment();
 
     wizards.forEach(function (wizard) {
       fragment.appendChild(renderWizard(wizard));
     });
 
-    target.appendChild(fragment);
+    wizardsSimilarList.appendChild(fragment);
   };
 
   var onLoad = function (wizards) {
-    addWizards(wizardsSimilarList, wizards.slice(0, WIZARDS_NUM));
+    addWizards(wizards.slice(0, WIZARDS_NUM));
     setupSimilar.classList.remove('hidden');
   };
 
-  window.backend.load(onLoad, window.utils.onError);
+  var onError = function (errorMessage) {
+    window.errorMessage.show(errorMessage);
+  };
+
+  window.backend.load(onLoad, onError);
 })();
