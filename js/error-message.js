@@ -2,7 +2,7 @@
 
 (function () {
   var BLINK_INTERVAL = 300;
-  var START_BLINK_TIMEOUT = 7500;
+  var START_BLINK_TIMEOUT = 7000;
   var SHOW_ERROR_TIMEOUT = 10000;
   var footerElement = document.querySelector('footer');
 
