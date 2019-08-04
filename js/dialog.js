@@ -180,7 +180,7 @@
   });
 
   dialogForm.addEventListener('submit', function (evt) {
-    window.backend.save(new FormData(dialogForm), closePopup, window.utils.onError);
+    window.backend.save(new FormData(dialogForm), closePopup, window.errorMessage.show);
     evt.preventDefault();
   });
 })();
