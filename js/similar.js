@@ -23,47 +23,45 @@
     return rank;
   };
 
-  var updateWizards = function () {
-    window.render.wizards(wizards.slice().
-    sort(function (left, right) {
-      var rankDiff = getRank(right) - getRank(left);
-
-      if (rankDiff === 0) {
-        rankDiff = wizards.indexOf(left) - wizards.indexOf(right);
-      }
-
-      return rankDiff;
-    }));
+  var getSimilarWizards = function (left, right) {
+    var rankDiff = getRank(right) - getRank(left);
+    return rankDiff === 0
+      ? left.name.localeCompare(right.name, 'ru', {sensitivity: 'base'})
+      : rankDiff;
   };
 
-  var onLoad = function (data) {
+  var getSortedSimilarWizards = function () {
+    return window.render.wizards(wizards.slice().sort(getSimilarWizards));
+  };
+
+  var onLoadData = function (data) {
     wizards = data;
-    updateWizards();
+    getSortedSimilarWizards();
     setupSimilar.classList.remove('hidden');
   };
 
-  var onError = function (errorMessage) {
+  var onLoadError = function (errorMessage) {
     window.errorMessage.show(errorMessage);
   };
 
-  window.setup.ChangeHandlers.onCoatChange = function (color) {
+  window.setup.changeWizardHandlers.onCoatChange = function (color) {
     coatColor = color;
-    window.similar.updateWizards();
+    window.similar.getSortedSimilarWizards();
   };
 
-  window.setup.ChangeHandlers.onEyesChange = function (color) {
+  window.setup.changeWizardHandlers.onEyesChange = function (color) {
     eyesColor = color;
-    window.similar.updateWizards();
+    window.similar.getSortedSimilarWizards();
   };
 
-  window.setup.ChangeHandlers.onFireballChange = function (color) {
+  window.setup.changeWizardHandlers.onFireballChange = function (color) {
     fireballColor = color;
-    window.similar.updateWizards();
+    window.similar.getSortedSimilarWizards();
   };
 
-  window.backend.load(onLoad, onError);
+  window.backend.load(onLoadData, onLoadError);
 
   window.similar = {
-    updateWizards: window.debounce(updateWizards),
+    getSortedSimilarWizards: window.debounce(getSortedSimilarWizards),
   };
 })();

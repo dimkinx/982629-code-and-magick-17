@@ -65,31 +65,29 @@
     coat: COAT_COLORS,
   });
 
-  var ChangeHandlers = {
-    onCoatChange: function (color) {
-      return color;
-    },
-    onEyesChange: function (color) {
-      return color;
-    },
-    onFireballChange: function (color) {
-      return color;
-    },
+  var getColorIdentity = function (color) {
+    return color;
+  };
+
+  var changeWizardHandlers = {
+    onCoatChange: getColorIdentity,
+    onEyesChange: getColorIdentity,
+    onFireballChange: getColorIdentity,
   };
 
   var onCoatClick = function () {
     coatInput.value = coatColor.style.fill = Colorize.next('coat');
-    window.setup.ChangeHandlers.onCoatChange(coatInput.value);
+    window.setup.changeWizardHandlers.onCoatChange(coatInput.value);
   };
 
   var onEyesClick = function () {
     eyesInput.value = eyesColor.style.fill = Colorize.next('eyes');
-    window.setup.ChangeHandlers.onEyesChange(eyesInput.value);
+    window.setup.changeWizardHandlers.onEyesChange(eyesInput.value);
   };
 
   var onFireballClick = function () {
     fireballInput.value = fireballColor.style.backgroundColor = Colorize.next('fireball');
-    window.setup.ChangeHandlers.onFireballChange(fireballInput.value);
+    window.setup.changeWizardHandlers.onFireballChange(fireballInput.value);
   };
 
   coatColor.addEventListener('click', onCoatClick);
@@ -97,6 +95,6 @@
   fireballColor.addEventListener('click', onFireballClick);
 
   window.setup = {
-    ChangeHandlers: ChangeHandlers,
+    changeWizardHandlers: changeWizardHandlers,
   };
 })();
